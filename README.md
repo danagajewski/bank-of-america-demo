@@ -29,6 +29,16 @@ services here:
 depends on `audit-logger` — so tests must reason about cross-service behavior, not
 just isolated functions.
 
+### Supporting services (additional coverage surface)
+Non-compliance-critical services that round out the platform and give more room to
+grow coverage:
+
+| Capability | Service | Language / Stack |
+|---|---|---|
+| Account balances (ledger vs available, holds, overdraft) | `balance-service` | Java 17 · Spring Boot · Maven |
+| Account/transaction fee assessment | `fee-engine` | Python 3 · pytest |
+| Customer card controls (lock/unlock, limits, authz) | `card-management-service` | TypeScript · Node · Jest |
+
 ## Coverage baseline (the gap to close)
 
 | Service | Tooling | Baseline coverage |
@@ -61,9 +71,12 @@ uncovered. Concretely, the following are *not yet tested*:
 │   ├── auth-service/               # Java — JWT sessions, 401 handling, audit
 │   ├── pii-handler/                # Java — SSN/PAN/account/email masking
 │   ├── audit-logger/               # Java — classified, timestamped audit trail
+│   ├── balance-service/            # Java — ledger vs available balance, holds
 │   ├── coverage-report/            # Java — JaCoCo monorepo-wide aggregate report
 │   ├── notification-service/       # TypeScript — fraud/txn/balance/regulatory alerts
-│   └── fraud-detection/            # Python — rules-based risk scoring
+│   ├── card-management-service/    # TypeScript — card lock/unlock, limits, authz
+│   ├── fraud-detection/            # Python — rules-based risk scoring
+│   └── fee-engine/                 # Python — overdraft/maintenance/ATM/wire fees
 ├── docs/SYNTHETIC_DATA.md          # Synthetic-data policy (no real PII, ever)
 └── .github/workflows/ci.yml        # CI: Java + TypeScript + Python
 ```
@@ -77,17 +90,17 @@ mvn -B verify
 # Monorepo aggregate report: services/coverage-report/target/site/jacoco-aggregate/index.html
 ```
 
-### TypeScript — `notification-service`
+### TypeScript — `notification-service`, `card-management-service`
 ```bash
-cd services/notification-service
+cd services/notification-service   # or services/card-management-service
 npm ci
 npm run build          # tsc type-check
 npm run test:coverage  # jest with coverage
 ```
 
-### Python — `fraud-detection`
+### Python — `fraud-detection`, `fee-engine`
 ```bash
-cd services/fraud-detection
+cd services/fraud-detection        # or services/fee-engine
 pip install -e ".[dev]"
 pytest                 # runs with coverage (pytest-cov)
 ```

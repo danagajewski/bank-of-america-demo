@@ -54,6 +54,20 @@ public class JwtService {
      * @throws TokenExpiredException if the token's {@code exp} has passed
      */
     public Claims parse(String token) {
+        Claims claims = parseIgnoringExpiry(token);
+        if (claims.getExp() <= clock.instant().getEpochSecond()) {
+            throw new TokenExpiredException("Token expired at " + claims.getExp());
+        }
+        return claims;
+    }
+
+    /**
+     * Verify a token's signature and decode its claims <em>without</em> checking
+     * expiry. Used to recover the subject of an expired token for audit logging.
+     *
+     * @throws InvalidTokenException if the token is malformed or the signature is invalid
+     */
+    public Claims parseIgnoringExpiry(String token) {
         if (token == null || token.isBlank()) {
             throw new InvalidTokenException("Token is empty");
         }
@@ -66,17 +80,12 @@ public class JwtService {
         if (!constantTimeEquals(expectedSig, parts[2])) {
             throw new InvalidTokenException("Signature verification failed");
         }
-        Claims claims;
         try {
             byte[] payload = Base64.getUrlDecoder().decode(parts[1]);
-            claims = mapper.readValue(payload, Claims.class);
+            return mapper.readValue(payload, Claims.class);
         } catch (Exception e) {
             throw new InvalidTokenException("Token payload is not valid JSON");
         }
-        if (claims.getExp() <= clock.instant().getEpochSecond()) {
-            throw new TokenExpiredException("Token expired at " + claims.getExp());
-        }
-        return claims;
     }
 
     private byte[] hmac(String input) {

@@ -94,10 +94,13 @@ public class AuthService {
         return clock.instant();
     }
 
-    /** Best-effort subject extraction for audit context; never throws. */
+    /**
+     * Best-effort subject extraction for audit context; never throws. Ignores
+     * expiry so that the actor of an expired token is still recorded.
+     */
     private String subjectFrom(String token) {
         try {
-            return jwtService.parse(token).getSub();
+            return jwtService.parseIgnoringExpiry(token).getSub();
         } catch (RuntimeException ignored) {
             return "unknown";
         }

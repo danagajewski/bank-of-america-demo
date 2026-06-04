@@ -1,0 +1,27 @@
+[project]
+name = "fee-engine"
+version = "1.0.0"
+description = "Assesses account and transaction fees (overdraft, maintenance, ATM, wire)."
+requires-python = ">=3.10"
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "pytest-cov>=4.1"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "--cov=fee_engine --cov-report=term-missing --cov-report=xml"
+
+[tool.coverage.run]
+branch = true
+source = ["fee_engine"]
+
+[tool.coverage.report]
+omit = ["*/models.py", "*/__init__.py"]
