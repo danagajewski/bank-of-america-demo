@@ -1,0 +1,29 @@
+[project]
+name = "fraud-detection"
+version = "1.0.0"
+description = "Rules-based real-time fraud risk scoring for customer transactions."
+requires-python = ">=3.10"
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "pytest-cov>=4.1"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "--cov=fraud_detection --cov-report=term-missing --cov-report=xml"
+
+[tool.coverage.run]
+branch = true
+source = ["fraud_detection"]
+
+[tool.coverage.report]
+# Pure data-transfer modules carry no branching logic; coverage focuses on the
+# risk-scoring rules an examiner actually reviews.
+omit = ["*/models.py", "*/__init__.py"]
