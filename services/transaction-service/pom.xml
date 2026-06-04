@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.bofa.digitalbanking</groupId>
+        <artifactId>digital-banking-platform</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>transaction-service</artifactId>
+    <name>transaction-service</name>
+    <description>
+        Core money-movement service: validates, books, and audits customer
+        transactions. NOTE: this service has no test infrastructure yet.
+    </description>
+
+    <!--
+      TODO(coverage): This service is missing its test infrastructure entirely.
+      There are no test dependencies (JUnit/Mockito), no JaCoCo plugin, and no
+      src/test source tree. The transaction validation and persistence paths are
+      compliance-critical and must be covered ahead of the OCC examination.
+    -->
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.bofa.digitalbanking</groupId>
+            <artifactId>pii-handler</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bofa.digitalbanking</groupId>
+            <artifactId>audit-logger</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
+</project>
