@@ -89,9 +89,6 @@ public class AuditLogger {
         }
         if (event.getOutcome() == AuditOutcome.FAILURE
                 || event.getOutcome() == AuditOutcome.DENIED) {
-            if (event.getType() == AuditEventType.AUTH_FAILURE) {
-                return Severity.CRITICAL;
-            }
             return Severity.WARN;
         }
         if (event.getType().isSecuritySensitive()) {

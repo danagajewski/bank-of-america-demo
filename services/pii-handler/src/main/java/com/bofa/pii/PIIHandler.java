@@ -27,7 +27,7 @@ public final class PIIHandler {
         if (digits.length() != 9) {
             throw new IllegalArgumentException("SSN must contain exactly 9 digits");
         }
-        String last4 = digits.substring(5);
+        String last4 = digits.substring(4);
         return "***-**-" + last4;
     }
 

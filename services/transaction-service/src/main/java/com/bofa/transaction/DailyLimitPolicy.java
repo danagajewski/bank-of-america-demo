@@ -12,7 +12,7 @@ public class DailyLimitPolicy {
     }
 
     public boolean exceedsLimit(BigDecimal amount) {
-        return amount.compareTo(perTransactionLimit) > 0;
+        return amount.compareTo(perTransactionLimit) >= 0;
     }
 
     public BigDecimal getPerTransactionLimit() {
