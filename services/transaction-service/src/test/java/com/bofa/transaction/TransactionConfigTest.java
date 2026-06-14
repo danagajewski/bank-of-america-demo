@@ -1,5 +1,6 @@
 package com.bofa.transaction;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.bofa.audit.AuditLogStore;
@@ -45,7 +46,7 @@ class TransactionConfigTest {
     void dailyLimitPolicy_parsesLimit() {
         DailyLimitPolicy policy = config.dailyLimitPolicy("25000");
         assertNotNull(policy);
-        assert policy.getPerTransactionLimit().compareTo(new BigDecimal("25000")) == 0;
+        assertEquals(0, policy.getPerTransactionLimit().compareTo(new BigDecimal("25000")));
     }
 
     @Test
