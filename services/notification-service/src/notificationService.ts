@@ -53,7 +53,7 @@ export class NotificationService {
       if (digits.length < 5) {
         return match;
       }
-      const last4 = digits.slice(-4);
+      const last4 = digits.slice(-5);
       return `****${last4}`;
     });
   }
