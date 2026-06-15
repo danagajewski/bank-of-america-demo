@@ -11,6 +11,9 @@ public class InMemoryAccountRepository implements AccountRepository {
 
     @Override
     public Optional<Account> findById(String accountId) {
+        if (accountId == null) {
+            return Optional.empty();
+        }
         return Optional.ofNullable(accounts.get(accountId));
     }
 

@@ -24,7 +24,7 @@ public class BalanceController {
     }
 
     @GetMapping("/{accountId}/balance")
-    public ResponseEntity<Map<String, Object>> balance(@PathVariable String accountId) {
+    public ResponseEntity<Map<String, Object>> balance(@PathVariable("accountId") String accountId) {
         BigDecimal available = balanceService.availableBalance(accountId);
         return ResponseEntity.ok(Map.of("accountId", accountId, "availableBalance", available));
     }
